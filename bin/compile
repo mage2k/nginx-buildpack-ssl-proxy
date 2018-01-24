@@ -2,37 +2,41 @@
 
 set -e
 
-mkdir -p "$1/bin/"
-mkdir -p "$1/scripts/"
+BUILD_DIR=$BUILD_DIR
+CACHE_DIR=$2
+ENV_DIR=$3
 
-echo "cache dir ($3) contents before: $(ls $3)"
-if [ -f $3/BUILD_NGINX -o ! -f "$3/nginx-$STACK" ]
+mkdir -p "$BUILD_DIR/bin/"
+mkdir -p "$BUILD_DIR/scripts/"
+
+echo "cache dir ($CACHE_DIR) contents before: $(ls $CACHE_DIR)"
+if [ -f $ENV_DIR/APP_BUILD_NGINX -o ! -f "$CACHE_DIR/nginx-$STACK" ]
 then
-  ./scripts/build_nginx.sh $1 $2 $3
+  ./scripts/build_nginx.sh $BUILD_DIR $CACHE_DIR $ENV_DIR
 fi
-echo "cache dir ($3) contents after: $(ls $3)"
+echo "cache dir ($CACHE_DIR) contents after: $(ls $CACHE_DIR)"
 
-cp "$3/nginx-$STACK" "$1/bin/nginx"
+cp "$3/nginx-$STACK" "$BUILD_DIR/bin/nginx"
 
-nginx_version=$($3/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
+nginx_version=$($CACHE_DIR/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
 echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
-cp bin/start-nginx "$1/bin/"
+cp bin/start-nginx "$BUILD_DIR/bin/"
 echo '-----> nginx-buildpack: Added start-nginx to app/bin'
-cp bin/start-nginx-solo "$1/bin/"
+cp bin/start-nginx-solo "$BUILD_DIR/bin/"
 echo '-----> nginx-buildpack: Added start-nginx-solo to app/bin'
-cp scripts/build_nginx.sh "$1/scripts/"
+cp scripts/build_nginx.sh "$BUILD_DIR/scripts/"
 echo '-----> nginx-buildpack: Added build_nginx.sh to app/scripts'
 
-mkdir -p "$1/config"
+mkdir -p "$BUILD_DIR/config"
 
-cp config/mime.types "$1/config/"
+cp config/mime.types "$BUILD_DIR/config/"
 echo '-----> nginx-buildpack: Default mime.types copied to app/config/'
 
-cp config/port_config.erb "$1/config/"
+cp config/port_config.erb "$BUILD_DIR/config/"
 echo '-----> nginx-buildpack: Default port_config.erb copied to app/config/'
 
-if [[ ! -f $1/config/nginx.conf.erb ]]; then
-	cp config/nginx.conf.erb "$1/config/"
+if [[ ! -f $BUILD_DIR/config/nginx.conf.erb ]]; then
+	cp config/nginx.conf.erb "$BUILD_DIR/config/"
 	echo '-----> nginx-buildpack: Default config copied to app/config.'
 else
 	echo '-----> nginx-buildpack: Custom config found in app/config.'
