@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 set -e
+set -x
 
 BUILD_DIR=$1
 CACHE_DIR=$2
