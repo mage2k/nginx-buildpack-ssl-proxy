@@ -48,7 +48,7 @@ echo "Downloading $open_ssl_url"
 
 (
 	cd nginx-${NGINX_VERSION}
-	CC=gcc ./configure \
+	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
 		--prefix=/tmp/nginx \
 		--add-module=${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
