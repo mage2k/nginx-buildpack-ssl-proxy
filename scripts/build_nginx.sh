@@ -42,10 +42,10 @@ echo "Downloading $open_ssl_url"
 	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
 		--prefix=$NGINX_BUILD_DIR/nginx \
-		--add-module=${build_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
+		--add-module=$NGINX_BUILD_DIR/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
     --with-stream \
     --with-stream_ssl_module \
-    --with-http_ssl_module --with-openssl=${build_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
+    --with-http_ssl_module --with-openssl=$NGINX_BUILD_DIR/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
     --with-http_sub_module
 	make -j ${num_cpu_cores} install
   cp $NGINX_BUILD_DIR/nginx/sbin/nginx $CACHE_DIR/nginx-$STACK
