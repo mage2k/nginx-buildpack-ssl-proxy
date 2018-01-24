@@ -4,11 +4,13 @@ set -e
 
 mkdir -p "$1/bin/"
 mkdir -p "$1/scripts/"
-# cp "bin/nginx-$STACK" "$1/bin/nginx"
+
+echo "cache contents before: $(ls $3)"
 if [ -f $3/BUILD_NGINX -o ! -f "$3/nginx-$STACK" ]
 then
   ./scripts/build_nginx.sh $1 $2 $3
 fi
+echo "cache contents after: $(ls $3)"
 
 cp "$3/nginx-$STACK" "$1/bin/nginx"
 
