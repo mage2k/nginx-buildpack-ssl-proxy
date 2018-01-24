@@ -25,4 +25,7 @@ if [[ ! -f $1/config/nginx.conf.erb ]]; then
 else
 	echo '-----> nginx-buildpack: Custom config found in app/config.'
 fi
+
+mkdir -p "$1/tmp"
+./scripts/build_nginx.sh "$1/tmp"
 exit 0

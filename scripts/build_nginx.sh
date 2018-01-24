@@ -23,13 +23,9 @@ pcre_tarball_url=http://downloads.sourceforge.net/project/pcre/pcre/${PCRE_VERSI
 headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz
 open_ssl_url=https://www.openssl.org/source/openssl-${OPEN_SSL_VERSION}.tar.gz
 
-temp_dir=$(mktemp -d /tmp/nginx.XXXXXXXXXX)
+temp_dir=$(mktemp -d $1/nginx.XXXXXXXXXX)
 
 num_cpu_cores=$(grep -c ^processor /proc/cpuinfo)
-
-echo "Serving files from /tmp on $PORT"
-cd /tmp
-python -m SimpleHTTPServer $PORT &
 
 cd $temp_dir
 echo "Temp dir: $temp_dir"
@@ -48,21 +44,19 @@ echo "Downloading $open_ssl_url"
 
 (
 	cd nginx-${NGINX_VERSION}
-  /app/.apt/usr/bin/gcc --help
-	# ./configure \
-#     --with-cc=/app/.apt/usr/bin/gcc \
-#     --with-pcre=pcre-${PCRE_VERSION} \
-#     --prefix=/tmp/nginx \
-#     --add-module=${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
-#     --with-stream \
-#     --with-stream_ssl_module
-#     --with-http_ssl_module --with-openssl=${temp_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
-#     --with-http_sub_module
-#   make -j ${num_cpu_cores} install
+	./configure \
+		--with-pcre=pcre-${PCRE_VERSION} \
+		--prefix=$1/nginx \
+		--add-module=${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
+    --with-stream \
+    --with-stream_ssl_module
+    --with-http_ssl_module --with-openssl=${temp_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
+    --with-http_sub_module
+	make -j ${num_cpu_cores} install
 )
 
-while true
-do
-	sleep 1
-	echo "."
-done
+# while true
+# do
+#   sleep 1
+#   echo "."
+# done
