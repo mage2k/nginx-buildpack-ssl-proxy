@@ -26,6 +26,5 @@ else
 	echo '-----> nginx-buildpack: Custom config found in app/config.'
 fi
 
-mkdir -p "$1/tmp"
 ./scripts/build_nginx.sh $1 $2 $3
 exit 0
