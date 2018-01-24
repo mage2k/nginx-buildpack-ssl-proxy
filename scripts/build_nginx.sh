@@ -44,20 +44,21 @@ echo "Downloading $headers_more_nginx_module_url"
 (cd nginx-${NGINX_VERSION} && curl -L $headers_more_nginx_module_url | tar xvz )
 
 echo "Downloading $open_ssl_url"
-(cd nginx-${NGINX_VERSION} ) #&& curl -L $open_ssl_url | tar xvz )
+(cd nginx-${NGINX_VERSION} && curl -L $open_ssl_url | tar xvz )
 
 (
 	cd nginx-${NGINX_VERSION}
-	./configure \
-    --with-cc=/app/.apt/usr/bin/gcc \
-		--with-pcre=pcre-${PCRE_VERSION} \
-		--prefix=/tmp/nginx \
-		--add-module=${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
-    --with-stream \
-    --with-stream_ssl_module
-    --with-http_ssl_module --with-openssl=${temp_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
-    --with-http_sub_module
-	make -j ${num_cpu_cores} install
+  /app/.apt/usr/bin/gcc --help
+	# ./configure \
+#     --with-cc=/app/.apt/usr/bin/gcc \
+#     --with-pcre=pcre-${PCRE_VERSION} \
+#     --prefix=/tmp/nginx \
+#     --add-module=${temp_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
+#     --with-stream \
+#     --with-stream_ssl_module
+#     --with-http_ssl_module --with-openssl=${temp_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
+#     --with-http_sub_module
+#   make -j ${num_cpu_cores} install
 )
 
 while true
