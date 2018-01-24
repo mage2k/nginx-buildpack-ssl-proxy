@@ -23,7 +23,7 @@ pcre_tarball_url=http://downloads.sourceforge.net/project/pcre/pcre/${PCRE_VERSI
 headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz
 open_ssl_url=https://www.openssl.org/source/openssl-${OPEN_SSL_VERSION}.tar.gz
 
-build_dir="$1/nginx.build"
+build_dir="$1/tmp"
 mkdir $build_dir
 
 num_cpu_cores=$(grep -c ^processor /proc/cpuinfo)
@@ -45,15 +45,17 @@ echo "Downloading $open_ssl_url"
 
 (
 	cd nginx-${NGINX_VERSION}
+  rm $1/bin/nginx-$STACK
 	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
-		--prefix=$1/nginx \
+		--prefix=$build_dir/nginx \
 		--add-module=${build_dir}/nginx-${NGINX_VERSION}/headers-more-nginx-module-${HEADERS_MORE_VERSION} \
     --with-stream \
     --with-stream_ssl_module \
     --with-http_ssl_module --with-openssl=${build_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
     --with-http_sub_module
 	make -j ${num_cpu_cores} install
+  cp $build_dir/nginx/sbin/nginx $1/bin/nginx-$STACK
 )
 
 # while true
