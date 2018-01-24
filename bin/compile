@@ -16,7 +16,7 @@ then
 fi
 echo "cache dir ($CACHE_DIR) contents after: $(ls $CACHE_DIR)"
 
-cp "$3/nginx-$STACK" "$BUILD_DIR/bin/nginx"
+cp "$CACHE_DIR/nginx-$STACK" "$BUILD_DIR/bin/nginx"
 
 nginx_version=$($CACHE_DIR/nginx-$STACK -V 2>&1 | head -1 | awk '{ print $NF }')
 echo "-----> nginx-buildpack: Installed ${nginx_version} to app/bin"
