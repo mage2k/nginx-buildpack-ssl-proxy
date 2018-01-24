@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Serving files from /tmp on $PORT"
-cd tmp
+# cd tmp
 python -m SimpleHTTPServer $PORT &
 
 while true
