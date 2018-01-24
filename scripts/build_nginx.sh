@@ -44,7 +44,7 @@ echo "Downloading $headers_more_nginx_module_url"
 (cd nginx-${NGINX_VERSION} && curl -L $headers_more_nginx_module_url | tar xvz )
 
 echo "Downloading $open_ssl_url"
-(cd nginx-${NGINX_VERSION} && curl -L $open_ssl_url | tar xvz )
+(cd nginx-${NGINX_VERSION} ) #&& curl -L $open_ssl_url | tar xvz )
 
 (
 	cd nginx-${NGINX_VERSION}
