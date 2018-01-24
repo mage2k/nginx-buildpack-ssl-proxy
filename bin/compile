@@ -9,12 +9,10 @@ ENV_DIR=$3
 mkdir -p "$BUILD_DIR/bin/"
 mkdir -p "$BUILD_DIR/scripts/"
 
-echo "cache dir ($CACHE_DIR) contents before: $(ls $CACHE_DIR)"
 if [ -f $ENV_DIR/APP_BUILD_NGINX -o ! -f "$CACHE_DIR/nginx-$STACK" ]
 then
   ./scripts/build_nginx.sh $BUILD_DIR $CACHE_DIR $ENV_DIR
 fi
-echo "cache dir ($CACHE_DIR) contents after: $(ls $CACHE_DIR)"
 
 cp "$CACHE_DIR/nginx-$STACK" "$BUILD_DIR/bin/nginx"
 
