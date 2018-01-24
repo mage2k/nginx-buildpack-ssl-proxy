@@ -45,7 +45,6 @@ echo "Downloading $open_ssl_url"
 
 (
 	cd nginx-${NGINX_VERSION}
-  rm $1/bin/nginx-$STACK
 	./configure \
 		--with-pcre=pcre-${PCRE_VERSION} \
 		--prefix=$build_dir/nginx \
@@ -55,7 +54,7 @@ echo "Downloading $open_ssl_url"
     --with-http_ssl_module --with-openssl=${build_dir}/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
     --with-http_sub_module
 	make -j ${num_cpu_cores} install
-  cp $build_dir/nginx/sbin/nginx $1/bin/nginx-$STACK
+  cp $build_dir/nginx/sbin/nginx $1/bin/
 )
 
 # while true
