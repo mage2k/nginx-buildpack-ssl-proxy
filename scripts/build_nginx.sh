@@ -23,7 +23,8 @@ pcre_tarball_url=http://downloads.sourceforge.net/project/pcre/pcre/${PCRE_VERSI
 headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-module/archive/v${HEADERS_MORE_VERSION}.tar.gz
 open_ssl_url=https://www.openssl.org/source/openssl-${OPEN_SSL_VERSION}.tar.gz
 
-build_dir=$(mkdir $1/nginx.build)
+build_dir="$1/nginx.build"
+mkdir $build_dir
 
 num_cpu_cores=$(grep -c ^processor /proc/cpuinfo)
 
