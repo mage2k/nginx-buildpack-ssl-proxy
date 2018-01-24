@@ -1,17 +1,9 @@
 #!/bin/bash
 # Build NGINX and modules on Heroku.
-# This program is designed to run in a web dyno provided by Heroku.
-# We would like to build an NGINX binary for the builpack on the
-# exact machine in which the binary will run.
-# Our motivation for running in a web dyno is that we need a way to
-# download the binary once it is built so we can vendor it in the buildpack.
-#
-# Once the dyno has is 'up' you can open your browser and navigate
-# this dyno's directory structure to download the nginx binary.
+# This is expected to be run during buildpack compilation
+# The resulting nginx binary is copied to $CACHE_DIR/nginx-$STACK
 
 set -o errexit
-
-PATH="/app/.apt/usr/bin/:${PATH}"
 
 NGINX_VERSION=${NGINX_VERSION-1.13.8}
 PCRE_VERSION=${PCRE_VERSION-8.41}
@@ -24,14 +16,14 @@ headers_more_nginx_module_url=https://github.com/agentzh/headers-more-nginx-modu
 open_ssl_url=https://www.openssl.org/source/openssl-${OPEN_SSL_VERSION}.tar.gz
 
 BUILD_DIR=$1
-NGINX_BUILD_DIR="$BULD_DIR/tmp"
+NGINX_BUILD_DIR="${BUILD_DIR}/tmp"
 CACHE_DIR=$2
 
 num_cpu_cores=$(grep -c ^processor /proc/cpuinfo)
 
 mkdir $NGINX_BUILD_DIR
 cd $NGINX_BUILD_DIR
-echo "Nginx build dir: $NGINX_BUILD_DIR"
+echo "Nginx build dir: ${NGINX_BUILD_DIR}"
 
 echo "Downloading $nginx_tarball_url"
 curl -L $nginx_tarball_url | tar xzv
@@ -58,9 +50,3 @@ echo "Downloading $open_ssl_url"
 	make -j ${num_cpu_cores} install
   cp $NGINX_BUILD_DIR/nginx/sbin/nginx $CACHE_DIR/nginx-$STACK
 )
-
-# while true
-# do
-#   sleep 1
-#   echo "."
-# done
