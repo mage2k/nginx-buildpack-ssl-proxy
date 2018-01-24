@@ -26,5 +26,10 @@ else
 	echo '-----> nginx-buildpack: Custom config found in app/config.'
 fi
 
-./scripts/build_nginx.sh $1 $2 $3
+if [ -f $3/BUILD_NGINX -o ! -f "bin/nginx-$STACK" ]
+then
+  ./scripts/build_nginx.sh $1 $2 $3
+else
+  cp "bin/nginx-$STACK" "$1/bin/nginx"
+fi
 exit 0
