@@ -46,7 +46,8 @@ echo "Downloading $open_ssl_url"
     --with-stream \
     --with-stream_ssl_module \
     --with-http_ssl_module --with-openssl=$NGINX_BUILD_DIR/nginx-${NGINX_VERSION}/openssl-${OPEN_SSL_VERSION} \
-    --with-http_sub_module
+    --with-http_sub_module \
+    --with-stream_realip_module
 	make -j ${num_cpu_cores} install
   cp $NGINX_BUILD_DIR/nginx/sbin/nginx $CACHE_DIR/nginx-$STACK
 )
